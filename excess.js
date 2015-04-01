@@ -287,11 +287,7 @@ var excess;
         }
         //Call someone
         ExcessPeer.prototype.call = function () {
-            var _this = this;
             var channel = this.createDataChannel('excess');
-            channel.onClose.add(function () {
-                _this.onClose.trigger();
-            });
             this.caller = true;
             this.connection.createOffer(this.onSDPCreate, this.onSDPError);
         };
@@ -312,13 +308,15 @@ var excess;
         };
         ExcessPeer.prototype.addDataChannel = function (dc) {
             var _this = this;
-            if (typeof dc != 'object') {
-                console.error('Data channel is not even an object!');
-            }
             excess.log('Added data channel ', dc);
             var channelWrapper = new excess.Channel(dc);
             this.channels[dc.label] = channelWrapper;
-            this.channels[dc.label].onClose.add(function () { return delete _this.channels[dc.label]; });
+            channelWrapper.onClose.add(function () { return delete channelWrapper; });
+            if (dc.label == 'excess') {
+                channelWrapper.onClose.add(function () {
+                    _this.onClose.trigger();
+                });
+            }
             return channelWrapper;
         };
         ExcessPeer.prototype.addIceCandidate = function (candidate) {

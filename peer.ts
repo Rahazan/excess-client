@@ -35,7 +35,7 @@ module excess {
         //Call someone
         public call() {
             var channel = this.createDataChannel('excess');
-            channel.onClose.add(() => { this.onClose.trigger() });
+            
             this.caller = true;
             this.connection.createOffer(this.onSDPCreate, this.onSDPError);
            
@@ -71,15 +71,16 @@ module excess {
         }
 
         private addDataChannel(dc: RTCDataChannel): excess.Channel {
-            if (typeof dc != 'object') {
-                console.error('Data channel is not even an object!');
-            }
             excess.log('Added data channel ', dc);
+            
             var channelWrapper = new Channel(dc);
             this.channels[dc.label] = channelWrapper;
 
-            this.channels[dc.label].onClose.add(() => delete this.channels[dc.label]);
+            channelWrapper.onClose.add(() => delete channelWrapper);
 
+            if (dc.label == 'excess') {
+                channelWrapper.onClose.add(() => { this.onClose.trigger() });
+            }
 
             return channelWrapper;
         }
