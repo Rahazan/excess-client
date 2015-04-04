@@ -98,8 +98,6 @@ module excess {
             }
         }
 
-
-
         public setRemoteDescription(sdpi: RTCSessionDescriptionInit, callback = () => { }) {
             excess.log("Attempting to set remote description.");
             var sdp = new RTCSessionDescription(sdpi);
@@ -131,7 +129,7 @@ module excess {
         }
 
         private onStateChange = (event) => {
-            excess.log('Connection state change ', event);           
+           // excess.log('Connection state change ', event);           
         }
 
         private onIceStateChange = (event) => {

@@ -256,7 +256,7 @@ var excess;
                 excess.log('Set local description ', _this.caller ? '(OFFER).' : '(ANSWER).');
             };
             this.onStateChange = function (event) {
-                excess.log('Connection state change ', event);
+                // excess.log('Connection state change ', event);           
             };
             this.onIceStateChange = function (event) {
                 // excess.log('ICE state changed: connection:', this.connection.iceConnectionState, 'gathering:', this.connection.iceGatheringState);
@@ -383,6 +383,7 @@ var excess;
             this.discoveryCallbacks = {};
             this.endPoint = endPoint;
         }
+        //Connect to signalling server
         Signaller.prototype.connect = function () {
             var _this = this;
             this.socket = new Phoenix.Socket(this.endPoint);

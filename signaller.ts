@@ -22,6 +22,7 @@ module excess {
             this.endPoint = endPoint;
         }
 
+        //Connect to signalling server
         connect(): Promise<{}> {
             this.socket = new Phoenix.Socket(this.endPoint);
 
